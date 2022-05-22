@@ -13,7 +13,7 @@ public class Movie {
     @Id
     private int id;
     private String title;
-    private int year;
+    private int releaseYear;
     private double rating;
     private String genre;
 }

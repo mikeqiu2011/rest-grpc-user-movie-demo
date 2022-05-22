@@ -20,11 +20,11 @@ public class MovieService extends MovieServiceGrpc.MovieServiceImplBase {
     @Override
     public void getMovies(MovieSearchRequest request, StreamObserver<MovieSearchResponse> responseObserver) {
 
-        List<MovieDto> moviesDtoList = this.repository.getMovieByGenreOrderByYearDesc(request.getGenre().toString())
+        List<MovieDto> moviesDtoList = this.repository.getMovieByGenreOrderByReleaseYearDesc(request.getGenre().toString())
                 .stream()
                 .map(movie -> MovieDto.newBuilder()
                         .setTitle(movie.getTitle())
-                        .setYear(movie.getYear())
+                        .setYear(movie.getReleaseYear())
                         .setRating(movie.getRating())
                         .build())
                 .collect(Collectors.toList());
