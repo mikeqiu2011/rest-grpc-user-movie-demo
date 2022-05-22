@@ -11,6 +11,7 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
 import java.util.Locale;
 
 @GrpcService
@@ -33,7 +34,21 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
+    @Transactional
     public void updateUserGenre(UserGenreUpdateRequest request, StreamObserver<UserResponse> responseObserver) {
-        super.updateUserGenre(request, responseObserver);
+        UserResponse.Builder builder = UserResponse.newBuilder();
+
+        this.userRepository.findById(request.getLoginId())
+                .ifPresent(user -> {
+                    user.setGenre(request.getGenre().toString());
+//                    this.userRepository.save(user);
+
+                    builder.setLoginId(user.getLogin())
+                            .setName(user.getName())
+                            .setGenre(Genre.valueOf(user.getGenre().toUpperCase()));
+                });
+
+        responseObserver.onNext(builder.build());
+        responseObserver.onCompleted();
     }
 }
