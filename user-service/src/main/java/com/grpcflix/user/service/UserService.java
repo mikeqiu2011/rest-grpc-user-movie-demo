@@ -1,6 +1,5 @@
 package com.grpcflix.user.service;
 
-import com.grpcflix.user.entity.User;
 import com.grpcflix.user.repository.UserRepository;
 import com.mike.grpcflix.common.Genre;
 import com.mike.grpcflix.user.UserGenreUpdateRequest;
@@ -12,7 +11,6 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
-import java.util.Locale;
 
 @GrpcService
 public class UserService extends UserServiceGrpc.UserServiceImplBase {

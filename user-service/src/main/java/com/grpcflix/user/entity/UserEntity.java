@@ -9,7 +9,7 @@ import javax.persistence.Id;
 @Data
 @Entity
 @ToString
-public class User {
+public class UserEntity {
     @Id
     private String login;
     private String name;

@@ -1,9 +1,9 @@
 package com.grpcflix.user.repository;
 
-import com.grpcflix.user.entity.User;
+import com.grpcflix.user.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<UserEntity, String> {
 }
