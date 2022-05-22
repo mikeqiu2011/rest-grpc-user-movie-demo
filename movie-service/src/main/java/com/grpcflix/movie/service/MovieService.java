@@ -9,6 +9,9 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @GrpcService
 public class MovieService extends MovieServiceGrpc.MovieServiceImplBase {
     @Autowired
@@ -16,20 +19,19 @@ public class MovieService extends MovieServiceGrpc.MovieServiceImplBase {
 
     @Override
     public void getMovies(MovieSearchRequest request, StreamObserver<MovieSearchResponse> responseObserver) {
-        MovieSearchResponse.Builder builder = MovieSearchResponse.newBuilder();
-        this.repository.getMovieByGenreOrderByYearDesc(request.getGenre().toString())
-                .stream()
-                .forEach(movie -> {
-                    builder.addMovie(
-                            MovieDto.newBuilder()
-                                    .setRating(movie.getRating())
-                                    .setTitle(movie.getTitle())
-                                    .setYear(movie.getYear())
-                                    .build()
-                    );
-                });
 
-        responseObserver.onNext(builder.build());
+        List<MovieDto> moviesDtoList = this.repository.getMovieByGenreOrderByYearDesc(request.getGenre().toString())
+                .stream()
+                .map(movie -> MovieDto.newBuilder()
+                        .setTitle(movie.getTitle())
+                        .setYear(movie.getYear())
+                        .setRating(movie.getRating())
+                        .build())
+                .collect(Collectors.toList());
+
+        MovieSearchResponse movieSearchResponse = MovieSearchResponse.newBuilder().addAllMovie(moviesDtoList).build();
+        responseObserver.onNext(movieSearchResponse);
+
         responseObserver.onCompleted();
     }
 }
