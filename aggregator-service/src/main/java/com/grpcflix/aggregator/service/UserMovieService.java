@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserMovieService {
-    @GrpcClient("user-service")
+    @GrpcClient("user-service")  // shall be the same as declared in application.yaml
     private UserServiceGrpc.UserServiceBlockingStub userStub;
 
     @GrpcClient("movie-service")
