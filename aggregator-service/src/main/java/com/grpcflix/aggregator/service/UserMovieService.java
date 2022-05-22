@@ -1,10 +1,13 @@
 package com.grpcflix.aggregator.service;
 
 import com.grpcflix.aggregator.dto.RecommendedMovie;
+import com.grpcflix.aggregator.dto.UserGenre;
 import com.mike.grpcflix.common.Genre;
 import com.mike.grpcflix.movie.MovieSearchRequest;
 import com.mike.grpcflix.movie.MovieSearchResponse;
 import com.mike.grpcflix.movie.MovieServiceGrpc;
+import com.mike.grpcflix.user.UserGenreUpdateRequest;
+import com.mike.grpcflix.user.UserResponse;
 import com.mike.grpcflix.user.UserSearchRequest;
 import com.mike.grpcflix.user.UserServiceGrpc;
 import net.devh.boot.grpc.client.inject.GrpcClient;
@@ -37,5 +40,13 @@ public class UserMovieService {
 
         return movies;
 
+    }
+
+    public void updateUserGenre(UserGenre userGenre){
+        UserGenreUpdateRequest userGenreUpdateRequest = UserGenreUpdateRequest.newBuilder()
+                .setLoginId(userGenre.getLoginId())
+                .setGenre(Genre.valueOf(userGenre.getGenre().toUpperCase()))
+                .build();
+        UserResponse userResponse = userStub.updateUserGenre(userGenreUpdateRequest);
     }
 }
